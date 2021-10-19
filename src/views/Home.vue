@@ -3,7 +3,7 @@
     <b-alert class="alert" variant="danger" :show="showAlert" fade>심볼명을 확인해주세요.</b-alert>
     <div class="wrap">
 
-    <div class="title">{{ title }}</div>
+    <Title v-bind:title="title" />
 
     <b-img 
       class="image"
@@ -40,9 +40,11 @@
 <script>
 import up from "../assets/up.jpeg"
 import down from "../assets/down.gif"
+import Title from '../components/Title.vue'
 
 export default {
   components: {
+    Title,
   },
   data() {
     return {
@@ -102,11 +104,6 @@ export default {
 <style>
   .wrap {
     padding-top: 60px;
-  }
-
-  .title {
-    font-size: 40px;
-    font-weight: bold;
   }
 
   .input-wrap {
