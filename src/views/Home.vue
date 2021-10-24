@@ -1,50 +1,51 @@
 <template>
   <div>
-    <b-alert class="alert" variant="danger" :show="showAlert" fade>심볼명을 확인해주세요.</b-alert>
+    <Alert 
+      :showAlert="showAlert" 
+      message="심볼명을 확인해주세요." 
+    />
     <div class="wrap">
-
-    <Title v-bind:title="title" />
-
+    <Title :title="title" />
     <b-img 
       class="image"
       center 
       :src="image" 
       alt="coin-image">
     </b-img>
-
     <b-input-group prepend="심볼명" class="input-wrap">
-      <b-input type="text" v-model="searchCoin" placeholder="심볼 입력 ex: BTC" />
+      <b-input 
+        type="text" 
+        placeholder="심볼 입력 ex: BTC"
+        v-model="searchCoin" 
+        v-on:keyup.enter="getCoin(searchCoin)"
+      />
       <b-input-group-append>
-        <b-button @click="getCoin(searchCoin)">검색</b-button>
+        <b-button @click="getCoin(searchCoin)">
+          검색
+        </b-button>
       </b-input-group-append>
     </b-input-group>
-
-    <div class="content-wrap">
-      <div class="content-left">
-        <div>어제 가격 : <span>{{ prev_closing_price.toLocaleString() }} 원</span></div>
-        <div>현재 가격 : <span v-bind:class="{ up: upPrice, down: downPrice }">{{ trade_price.toLocaleString() }} 원</span></div>
-      </div>
-      <div class="content-right">
-        <div v-bind:class="{ up: upPrice, down: downPrice }">
-          <span v-show="upPrice">+</span>{{ change_price.toLocaleString() }} 원
-        </div>
-        <div v-bind:class="{ up: upPrice, down: downPrice }">
-          <span v-show="upPrice">+</span>{{ change_rate.toLocaleString() }} %
-        </div>
-      </div>
-    </div>
-
+    <Result 
+      :prev_closing_price="prev_closing_price"
+      :trade_price="trade_price"
+      :change_price="change_price"
+      :change_rate="change_rate"
+      :upPrice="upPrice"
+      :downPrice="downPrice"
+    />
     </div>
   </div>
 </template>
 <script>
-import up from "../assets/up.jpeg"
-import down from "../assets/down.gif"
-import Title from '../components/Title.vue'
+import { up, down1, down2 } from "../assets/index"
+import { Title, Alert, Result } from "../components/index"
+import { randomBoolean } from "../utils/util"
 
 export default {
   components: {
     Title,
+    Alert,
+    Result
   },
   data() {
     return {
@@ -64,12 +65,13 @@ export default {
   },
   methods: {
     calcPrice() {
+      const rb = randomBoolean();
       if (this.trade_price > this.prev_closing_price) {
         this.image = up;
         this.upPrice = true;
         this.downPrice = false;
       } else {
-        this.image = down;
+        this.image = rb ? down1 : down2;
         this.downPrice = true;
         this.upPrice = false;
       }
@@ -92,7 +94,7 @@ export default {
         setTimeout(() => {
           this.showAlert = false;
         }, 3000);
-        console.log(err);
+        console.error(err);
       });
     },
   },
@@ -118,35 +120,4 @@ export default {
     height: 300px;
   }
 
-  .alert {
-    position: absolute !important;
-    top: 0;
-    width: 100%;
-  }
-
-  .content-wrap {
-    display: flex;
-    padding: 20px 0;
-    justify-content: center;
-    align-items: center;
-    color: #248C45;
-    line-height: 30px;
-  }
-
-  .content-left {
-    margin-right: 14px;
-    text-align: left;
-  }
-
-  .content-right {
-    text-align: right;
-  }
-
-  .up {
-    color: #d60000;
-  }
-
-  .down {
-    color: #0051c7;
-  }
 </style>
