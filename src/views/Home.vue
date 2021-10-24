@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { up, down1, down2 } from "../assets/index"
+import { up1, up2, down1, down2 } from "../assets/index"
 import { Title, Alert, Result } from "../components/index"
 import { randomBoolean } from "../utils/util"
 
@@ -67,7 +67,7 @@ export default {
     calcPrice() {
       const rb = randomBoolean();
       if (this.trade_price > this.prev_closing_price) {
-        this.image = up;
+        this.image = rb ? up1 : up2;
         this.upPrice = true;
         this.downPrice = false;
       } else {
