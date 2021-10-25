@@ -14,7 +14,7 @@
     </b-img>
     <b-select 
       class="select-coin"
-      v-model="searchCoin" 
+      v-model="selectCoin" 
       :options="coinList"
     />
     <b-input-group prepend="심볼명" class="input-wrap">
@@ -57,6 +57,7 @@ export default {
     return {
       title: 'BTC',
       coinList: [],
+      selectCoin: 'BTC',
       searchCoin: 'BTC',
       trade_price: 0,
       prev_closing_price: 0,
@@ -69,6 +70,9 @@ export default {
     }
   },
   watch: {
+    selectCoin(value) {
+      this.searchCoin = value
+    }
   },
   methods: {
     calcPrice() {
