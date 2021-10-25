@@ -12,6 +12,11 @@
       :src="image" 
       alt="coin-image">
     </b-img>
+    <b-select 
+      class="select-coin"
+      v-model="searchCoin" 
+      :options="coinList"
+    />
     <b-input-group prepend="심볼명" class="input-wrap">
       <b-input 
         type="text" 
@@ -40,6 +45,7 @@
 import { up1, up2, down1, down2 } from "../assets/index"
 import { Title, Alert, Result } from "../components/index"
 import { randomBoolean } from "../utils/util"
+import { getCoinList } from "../api/api"
 
 export default {
   components: {
@@ -50,6 +56,7 @@ export default {
   data() {
     return {
       title: 'BTC',
+      coinList: [],
       searchCoin: 'BTC',
       trade_price: 0,
       prev_closing_price: 0,
@@ -88,6 +95,7 @@ export default {
 
         this.calcPrice();
 
+        this.selectCoin = coin.toUpperCase();
         this.title = coin.toUpperCase();
       }).catch((err) => {
         this.showAlert = true;
@@ -98,7 +106,9 @@ export default {
       });
     },
   },
-  created() {
+  async created() {
+    const coinList = await getCoinList();
+    this.coinList = coinList;
     this.getCoin(this.searchCoin);
   },
 }
@@ -106,6 +116,13 @@ export default {
 <style>
   .wrap {
     padding-top: 60px;
+  }
+
+  .select-coin {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .input-wrap {
