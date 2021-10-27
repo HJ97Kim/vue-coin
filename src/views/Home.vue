@@ -135,10 +135,21 @@ export default {
     float: none;
   }
 
-  .image {
-    margin: 20px 0;
-    width: 300px;
-    height: 300px;
+  @media screen and (min-width: 769px) {
+    .image {
+      margin: 20px 0;
+      width: 450px;
+      height: 450px;
+    }
   }
+
+  @media screen and (max-width: 768px) {
+    .image {
+      margin: 20px 0;
+      width: 300px;
+      height: 300px;
+    }
+  }
+
 
 </style>
